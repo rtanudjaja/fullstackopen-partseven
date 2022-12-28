@@ -6,13 +6,15 @@ import Notification from './components/Notification'
 import CreateForm from './components/CreateForm'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
+import { connect, useDispatch } from 'react-redux'
+import { setNotificationWithTimeout } from './reducers/notificationReducer'
 
-const App = () => {
+const App = (props) => {
+  const dispatch = useDispatch()
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [successMessage, setSuccessMessage] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
   const createFormRef = useRef()
+  const notifications = props.notifications
 
   useEffect(() => {
     if (user !== null) {
@@ -45,17 +47,11 @@ const App = () => {
         setBlogs( blogs )
       ))
       .then(() => {
-        setSuccessMessage(`a new blog ${newTitle} by ${newAuthor} added`)
-        setTimeout(() => {
-          setSuccessMessage(null)
-        }, 5000)
+        dispatch(setNotificationWithTimeout(`a new blog ${newTitle} by ${newAuthor} added`, 'success', 5000))
         createFormRef.current.toggleVisibility()
       })
       .catch(() => {
-        setErrorMessage('fail to add blog')
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
+        dispatch(setNotificationWithTimeout('fail to add blog', 'error', 5000))
       })
   }
 
@@ -79,7 +75,7 @@ const App = () => {
   if (user === null) {
     return (
       <>
-        <Login setUser={setUser} setSuccessMessage={setSuccessMessage}/>
+        <Login setUser={setUser} setSuccessMessage={() => console.log('success')}/>
       </>
     )
   }
@@ -87,8 +83,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      <Notification message={successMessage} msgStyle={'success'} />
-      <Notification message={errorMessage} msgStyle={'error'} />
+      <Notification {...notifications} />
       <p>{user.name} logged in&nbsp;<button type="button" onClick={() => {
         window.localStorage.removeItem('loggedNoteappUser')
         setUser(null)
@@ -103,4 +98,11 @@ const App = () => {
   )
 }
 
-export default App
+const mapStateToProps = (state) => {
+  return {
+    notifications: state.notifications,
+  }
+}
+
+const ConnectedApp = connect(mapStateToProps)(App)
+export default ConnectedApp

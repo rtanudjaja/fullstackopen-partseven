@@ -2,8 +2,12 @@ import { useState } from 'react'
 import Notification from '../components/Notification'
 import loginService from '../services/login'
 import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
+import { setUser } from '../reducers/userReducer'
+import { setNotificationWithTimeout } from '../reducers/notificationReducer'
 
-const Login = ({ setUser, setSuccessMessage }) => {
+const Login = () => {
+  const dispatch = useDispatch()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
@@ -17,13 +21,10 @@ const Login = ({ setUser, setSuccessMessage }) => {
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       )
-      setUser(user)
+      dispatch(setUser(user))
       setUsername('')
       setPassword('')
-      setSuccessMessage('login is successful')
-      setTimeout(() => {
-        setSuccessMessage(null)
-      }, 5000)
+      dispatch(setNotificationWithTimeout('login is successful', 'success', 5000))
     } catch (exception) {
       setErrorMessage('wrong username or password')
       setTimeout(() => {

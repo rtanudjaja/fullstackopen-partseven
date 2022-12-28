@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import Notification from '../components/Notification'
 import loginService from '../services/login'
-import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../reducers/userReducer'
 import { setNotificationWithTimeout } from '../reducers/notificationReducer'
@@ -60,11 +59,6 @@ const Login = () => {
       <button id="login-button" type="submit">login</button>
     </form>
   )
-}
-
-Login.propTypes = {
-  setUser: PropTypes.func.isRequired,
-  setSuccessMessage: PropTypes.func.isRequired
 }
 
 export default Login

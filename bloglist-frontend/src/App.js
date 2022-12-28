@@ -1,12 +1,19 @@
 import './index.css'
 import { useEffect, useRef } from 'react'
+import { connect, useDispatch } from 'react-redux'
+import {
+  Routes, Route
+  // Routes, Route, Link,
+  // useMatch,
+  // useNavigate,
+} from 'react-router-dom'
 import Blog from './components/Blog'
 import Login from './components/Login'
 import Notification from './components/Notification'
 import CreateForm from './components/CreateForm'
 import Togglable from './components/Togglable'
+import Users from './components/Users'
 import blogService from './services/blogs'
-import { connect, useDispatch } from 'react-redux'
 import { setUser } from './reducers/userReducer'
 import { setBlogs } from './reducers/blogReducer'
 import { setNotificationWithTimeout } from './reducers/notificationReducer'
@@ -118,7 +125,7 @@ const App = (props) => {
       <Togglable buttonLabel="new blog" ref={createFormRef}>
         <CreateForm addBlog={addBlog} />
       </Togglable>
-      {blogs
+      {blogs.slice()
         .sort((a, b) => b.likes - a.likes)
         .map((blog, i) => (
           <Blog
@@ -130,6 +137,9 @@ const App = (props) => {
             user={user}
           />
         ))}
+      <Routes>
+        <Route path="/users" element={<Users blogs={blogs} />} />
+      </Routes>
     </div>
   )
 }

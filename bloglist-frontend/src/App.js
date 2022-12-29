@@ -3,9 +3,7 @@ import { useEffect, useRef } from 'react'
 import { connect, useDispatch } from 'react-redux'
 import {
   Routes, Route,
-  // Routes, Route, Link,
   useMatch,
-  // useNavigate,
 } from 'react-router-dom'
 import Blog from './components/Blog'
 import Login from './components/Login'
@@ -15,6 +13,7 @@ import Togglable from './components/Togglable'
 import Users from './components/Users'
 import UserBlogs from './components/UserBlogs'
 import BlogView from './components/BlogView'
+import Navigation from './components/Navigation'
 import blogService from './services/blogs'
 import { setUser } from './reducers/userReducer'
 import { setBlogs } from './reducers/blogReducer'
@@ -95,11 +94,6 @@ const App = (props) => {
     )
   }
 
-  const remove = async (blog) => {
-    await blogService.remove(blog.id)
-    dispatch(setBlogs(blogs.filter((n) => n.id !== blog.id)))
-  }
-
   const usersMatch = useMatch('/users/:id')
   const userBlogs = usersMatch ? blogs.filter(blog => blog.user.id === usersMatch.params.id) : []
   const blogMatch = useMatch('/blogs/:id')
@@ -115,36 +109,26 @@ const App = (props) => {
 
   return (
     <div>
-      <h2>blogs</h2>
+      <Navigation user={user} />
+      <h2>blog app</h2>
       <Notification {...notifications} />
-      <p>
-        {user.name} logged in&nbsp;
-        <button
-          type="button"
-          onClick={() => {
-            window.localStorage.removeItem('loggedBlogappUser')
-            dispatch(setUser(null))
-          }}
-        >
-          logout
-        </button>
-      </p>
-      <Togglable buttonLabel="new blog" ref={createFormRef}>
+      <Togglable buttonLabel="create new" ref={createFormRef}>
         <CreateForm addBlog={addBlog} />
       </Togglable>
-      {blogs.slice()
-        .sort((a, b) => b.likes - a.likes)
-        .map((blog, i) => (
-          <Blog
-            className={`blog-${i}`}
-            key={blog.id}
-            blog={blog}
-            addLike={addLike}
-            remove={remove}
-            user={user}
-          />
-        ))}
       <Routes>
+        <Route path="/" element={
+          <>
+            {blogs.slice()
+              .sort((a, b) => b.likes - a.likes)
+              .map((blog, i) => (
+                <Blog
+                  className={`blog-${i}`}
+                  key={blog.id}
+                  blog={blog}
+                />
+              ))}
+          </>
+        } />
         <Route path="/users" element={<Users blogs={blogs} />} />
         <Route path="/users/:id" element={<UserBlogs userBlogs={userBlogs} />} />
         <Route path="/blogs/:id" element={<BlogView blog={blog} addLike={addLike} />} />

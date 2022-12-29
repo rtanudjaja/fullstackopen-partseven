@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 const Blog = ({ blog, addLike, remove, user }) => {
   const [showHide, setShowHide] = useState(false)
@@ -14,8 +15,8 @@ const Blog = ({ blog, addLike, remove, user }) => {
 
   return (
     <div style={blogStyle}>
+      <span><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></span>&nbsp;
       <span>
-        {blog.title} {blog.author}&nbsp;
         <button type="button" onClick={() => setShowHide(!showHide)}>
           {!showHide ? 'view' : 'hide'}
         </button>

@@ -14,6 +14,7 @@ import CreateForm from './components/CreateForm'
 import Togglable from './components/Togglable'
 import Users from './components/Users'
 import UserBlogs from './components/UserBlogs'
+import BlogView from './components/BlogView'
 import blogService from './services/blogs'
 import { setUser } from './reducers/userReducer'
 import { setBlogs } from './reducers/blogReducer'
@@ -99,8 +100,10 @@ const App = (props) => {
     dispatch(setBlogs(blogs.filter((n) => n.id !== blog.id)))
   }
 
-  const match = useMatch('/users/:id')
-  const userBlogs = match ? blogs.filter(blog => blog.user.id === match.params.id) : []
+  const usersMatch = useMatch('/users/:id')
+  const userBlogs = usersMatch ? blogs.filter(blog => blog.user.id === usersMatch.params.id) : []
+  const blogMatch = useMatch('/blogs/:id')
+  const blog = blogMatch ? blogs.find(blog => blog.id === blogMatch.params.id) : []
 
   if (user === null) {
     return (
@@ -144,6 +147,7 @@ const App = (props) => {
       <Routes>
         <Route path="/users" element={<Users blogs={blogs} />} />
         <Route path="/users/:id" element={<UserBlogs userBlogs={userBlogs} />} />
+        <Route path="/blogs/:id" element={<BlogView blog={blog} addLike={addLike} />} />
       </Routes>
     </div>
   )

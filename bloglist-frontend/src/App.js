@@ -2,9 +2,9 @@ import './index.css'
 import { useEffect, useRef } from 'react'
 import { connect, useDispatch } from 'react-redux'
 import {
-  Routes, Route
+  Routes, Route,
   // Routes, Route, Link,
-  // useMatch,
+  useMatch,
   // useNavigate,
 } from 'react-router-dom'
 import Blog from './components/Blog'
@@ -13,6 +13,7 @@ import Notification from './components/Notification'
 import CreateForm from './components/CreateForm'
 import Togglable from './components/Togglable'
 import Users from './components/Users'
+import UserBlogs from './components/UserBlogs'
 import blogService from './services/blogs'
 import { setUser } from './reducers/userReducer'
 import { setBlogs } from './reducers/blogReducer'
@@ -98,6 +99,9 @@ const App = (props) => {
     dispatch(setBlogs(blogs.filter((n) => n.id !== blog.id)))
   }
 
+  const match = useMatch('/users/:id')
+  const userBlogs = match ? blogs.filter(blog => blog.user.id === match.params.id) : []
+
   if (user === null) {
     return (
       <>
@@ -139,6 +143,7 @@ const App = (props) => {
         ))}
       <Routes>
         <Route path="/users" element={<Users blogs={blogs} />} />
+        <Route path="/users/:id" element={<UserBlogs userBlogs={userBlogs} />} />
       </Routes>
     </div>
   )

@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 const Users = ({ blogs }) => {
   if(!blogs) {
     return null
@@ -20,13 +22,17 @@ const Users = ({ blogs }) => {
     <>
       <h2>Users</h2>
       <table>
-        <tr><th></th><th><b>blogs created</b></th></tr>
-        {usersBlogs.map((userBlog) => (
-          <tr key={userBlog.user.id}>
-            <td>{userBlog.user.name}</td>
-            <td>{userBlog.total}</td>
-          </tr>
-        ))}
+        <thead>
+          <tr><th></th><th><b>blogs created</b></th></tr>
+        </thead>
+        <tbody>
+          {usersBlogs.map((userBlog) => (
+            <tr key={userBlog.user.id}>
+              <td><Link to={`${userBlog.user.id}`}>{userBlog.user.name}</Link></td>
+              <td>{userBlog.total}</td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </>
   )

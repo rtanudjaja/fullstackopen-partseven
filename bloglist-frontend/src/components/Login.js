@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Notification from '../components/Notification'
 import loginService from '../services/login'
 import { useDispatch } from 'react-redux'
+import { Button } from 'react-bootstrap'
 import { setUser } from '../reducers/userReducer'
 import { setNotificationWithTimeout } from '../reducers/notificationReducer'
 
@@ -56,7 +57,7 @@ const Login = () => {
           onChange={({ target }) => setPassword(target.value)}
         />
       </div>
-      <button id="login-button" type="submit">login</button>
+      <Button variant="light" id="login-button" type="submit">login</Button>
     </form>
   )
 }

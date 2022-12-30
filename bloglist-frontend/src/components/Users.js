@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
 
 const Users = ({ blogs }) => {
   if(!blogs) {
@@ -21,7 +22,7 @@ const Users = ({ blogs }) => {
   return (
     <>
       <h2>Users</h2>
-      <table>
+      <Table>
         <thead>
           <tr><th></th><th><b>blogs created</b></th></tr>
         </thead>
@@ -33,7 +34,7 @@ const Users = ({ blogs }) => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </>
   )
 }

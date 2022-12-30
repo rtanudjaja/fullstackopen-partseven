@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { Button } from 'react-bootstrap'
 
 const CreateForm = ({ addBlog }) => {
   const [newTitle, setNewTitle] = useState('')
@@ -42,7 +43,7 @@ const CreateForm = ({ addBlog }) => {
         value={newUrl}
         onChange={handleUrlChange}
       /><br/>
-      <button id="submit-button" type="submit">save</button>
+      <Button variant="light" id="submit-button" type="submit">save</Button>
     </form>
   )
 }

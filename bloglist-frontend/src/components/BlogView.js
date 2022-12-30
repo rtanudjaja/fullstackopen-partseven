@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { Button } from 'react-bootstrap'
 import blogService from '../services/blogs'
 import { setNotificationWithTimeout } from '../reducers/notificationReducer'
 
@@ -39,9 +40,9 @@ const BlogView = ({ blog, addLike }) => {
       <a href={blog.url} target="_blank" rel="noreferrer" >{blog.url}</a>
       <div>
         <span>{blog.likes}&nbsp;likes&nbsp;</span>
-        <button id="like-button" type="button" onClick={() => addLike(blog)}>
+        <Button variant="success" onClick={() => addLike(blog)}>
           like
-        </button>
+        </Button>
         <div>added by {author}</div>
       </div>
       <h3>comments</h3>
@@ -49,8 +50,8 @@ const BlogView = ({ blog, addLike }) => {
         id="title"
         value={newComment}
         onChange={handleCommentChange}
-      />
-      <button type="button" onClick={handleAddComment}>add comment</button>
+      />&nbsp;
+      <Button variant="primary" onClick={handleAddComment}>add comment</Button>
       <ul>
         {blog.comments.map((comment, i) => (
           <li key={i}>{comment}</li>

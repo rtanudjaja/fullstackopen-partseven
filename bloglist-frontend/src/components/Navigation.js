@@ -1,24 +1,24 @@
-import { Link } from 'react-router-dom'
+import { Navbar, Nav } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
+import { Button } from 'react-bootstrap'
 import { setUser } from '../reducers/userReducer'
 
 const Navigation = ({ user }) => {
   const dispatch = useDispatch()
   return (
-    <>
-      <Link to="/">blogs</Link>&nbsp;
-      <Link to="/users">users</Link>&nbsp;
-      <span>{user.name}</span>&nbsp;
-      <button
-        type="button"
+    <Navbar bg="light">
+      <Nav.Link href="/">blogs</Nav.Link>
+      <Nav.Link href="/users">users</Nav.Link>
+      <span>&nbsp;{user.name}&nbsp;</span>
+      <Button variant="danger"
         onClick={() => {
           window.localStorage.removeItem('loggedBlogappUser')
           dispatch(setUser(null))
         }}
       >
         logout
-      </button>
-    </>
+      </Button>
+    </Navbar>
   )
 }
 

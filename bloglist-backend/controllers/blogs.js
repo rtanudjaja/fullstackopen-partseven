@@ -21,7 +21,8 @@ blogsRouter.post('/', async (request, response, next) => {
       author: request.body.author,
       url: request.body.url,
       likes: request.body.likes,
-      user: user.id
+      user: user.id,
+      comments: []
     })
     if(!blog.title && !blog.url) {
       return response.sendStatus(400)
@@ -70,9 +71,32 @@ blogsRouter.put('/:id', async (request, response, next) => {
     author: body.author,
     url: body.url,
     likes: body.likes,
+    comments: body.comments
   }
 
   try {
+    const updateBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+    response.json(updateBlog.toJSON())
+  } catch (exception) {
+    next(exception)
+  }
+})
+
+blogsRouter.post('/:id/comments', async (request, response, next) => {
+  const { comments } = request.body
+  try {
+    const oldBlog = await Blog.findById(request.params.id)
+    if(!oldBlog) {
+      return response.status(401).json({ error: 'blog id missing or invalid' })
+    }
+    const blog = {
+      user: oldBlog.user,
+      title: oldBlog.title,
+      author: oldBlog.author,
+      url: oldBlog.url,
+      likes: oldBlog.likes,
+      comments: [...oldBlog.comments, comments]
+    }
     const updateBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
     response.json(updateBlog.toJSON())
   } catch (exception) {

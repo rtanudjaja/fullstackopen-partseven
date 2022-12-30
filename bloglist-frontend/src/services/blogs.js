@@ -43,6 +43,15 @@ const remove = async (blogId) => {
   return response.data
 }
 
-const blogService = { getAll, setToken, create, like, remove }
+const addComment = async (blogId, comment) => {
+  const config = {
+    headers: { Authorization: token },
+  }
+  const newObject = { comments: comment }
+  const response = await axios.post(baseUrl.concat('/',blogId).concat('/comments'), newObject, config)
+  return response.data
+}
+
+const blogService = { getAll, setToken, create, like, remove, addComment }
 
 export default blogService
